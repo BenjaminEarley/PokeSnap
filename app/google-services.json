@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "835448030595",
+    "firebase_url": "https://zapdos-e5b61.firebaseio.com",
+    "project_id": "zapdos-e5b61",
+    "storage_bucket": "zapdos-e5b61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835448030595:android:7d682abe8f2da9b6",
+        "android_client_info": {
+          "package_name": "com.benjaminearley.zapdos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835448030595-6onc5c5iganlafnejlc0ni1iasd2losp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.benjaminearley.zapdos",
+            "certificate_hash": "F9EBCD519D9BB3AC1A83658D219A17F89EFD12E9"
+          }
+        },
+        {
+          "client_id": "835448030595-f8epd88pr9sfhgstagd4nkmvgbuhiokm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0OE7I89M7-M8yXk4JI63Y0GBmJWwyUZk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835448030595-f8epd88pr9sfhgstagd4nkmvgbuhiokm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
