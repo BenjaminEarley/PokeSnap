@@ -20,18 +20,18 @@ import java.io.IOException
 
 class ScreenRecorderService : Service() {
 
-    private var mMediaProjectionManager: MediaProjectionManager? = null
+    private var mediaProjectionManager: MediaProjectionManager? = null
 
     override fun onCreate() {
         super.onCreate()
-        mMediaProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        mediaProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
     }
 
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
-    private var mMediaProjection: MediaProjection? = null
+    private var mediaProjection: MediaProjection? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val action = intent.action
@@ -52,28 +52,28 @@ class ScreenRecorderService : Service() {
 
     private fun startRecordingService(resultCode: Int, intent: Intent) {
         Log.v(TAG, "Starting Recording")
-        mMediaProjection = mMediaProjectionManager!!.getMediaProjection(resultCode, intent)
-        mMediaProjectionCallback = MediaProjectionCallback()
-        mMediaProjection!!.registerCallback(mMediaProjectionCallback, null)
-        mMediaRecorder = MediaRecorder()
+        mediaProjection = mediaProjectionManager!!.getMediaProjection(resultCode, intent)
+        mediaProjectionCallback = MediaProjectionCallback()
+        mediaProjection!!.registerCallback(mediaProjectionCallback, null)
+        mediaRecorder = MediaRecorder()
         initRecorder()
         shareScreen()
-        mVirtualDisplay = createVirtualDisplay()
+        virtualDisplay = createVirtualDisplay()
     }
 
     private fun stopReocrdingService() {
-        mMediaRecorder!!.stop()
-        mMediaRecorder!!.reset()
+        mediaRecorder!!.stop()
+        mediaRecorder!!.reset()
         Log.v(TAG, "Stopping Recording")
         stopScreenSharing()
     }
 
-    private var mMediaRecorder: MediaRecorder? = null
-    private var mVirtualDisplay: VirtualDisplay? = null
-    private var mScreenDensity: Int = 0
+    private var mediaRecorder: MediaRecorder? = null
+    private var virtualDisplay: VirtualDisplay? = null
+    private var screenDensity: Int = 0
 
     private fun shareScreen() {
-        mMediaRecorder!!.start()
+        mediaRecorder!!.start()
     }
 
     private fun createVirtualDisplay(): VirtualDisplay {
@@ -81,30 +81,30 @@ class ScreenRecorderService : Service() {
         val metrics = DisplayMetrics()
         val window = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         window.defaultDisplay.getMetrics(metrics)
-        mScreenDensity = metrics.densityDpi
+        screenDensity = metrics.densityDpi
 
-        return mMediaProjection!!.createVirtualDisplay("MainActivity",
-                DISPLAY_WIDTH, DISPLAY_HEIGHT, mScreenDensity,
+        return mediaProjection!!.createVirtualDisplay("MainActivity",
+                DISPLAY_WIDTH, DISPLAY_HEIGHT, screenDensity,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                mMediaRecorder!!.surface, null, null)
+                mediaRecorder!!.surface, null, null)
     }
 
     private fun initRecorder() {
         try {
-            mMediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mMediaRecorder!!.setVideoSource(MediaRecorder.VideoSource.SURFACE)
-            mMediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mMediaRecorder!!.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/catch+" + System.currentTimeMillis() / 1000L + ".mp4")
-            mMediaRecorder!!.setVideoSize(DISPLAY_WIDTH, DISPLAY_HEIGHT)
-            mMediaRecorder!!.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
-            mMediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-            mMediaRecorder!!.setVideoEncodingBitRate(2097152)
-            mMediaRecorder!!.setVideoFrameRate(30)
+            mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
+            mediaRecorder!!.setVideoSource(MediaRecorder.VideoSource.SURFACE)
+            mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            mediaRecorder!!.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/catch+" + System.currentTimeMillis() / 1000L + ".mp4")
+            mediaRecorder!!.setVideoSize(DISPLAY_WIDTH, DISPLAY_HEIGHT)
+            mediaRecorder!!.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+            mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            mediaRecorder!!.setVideoEncodingBitRate(2097152)
+            mediaRecorder!!.setVideoFrameRate(30)
             val window = getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val rotation = window.defaultDisplay.rotation
             val orientation = ORIENTATIONS.get(rotation + 90)
-            mMediaRecorder!!.setOrientationHint(orientation)
-            mMediaRecorder!!.prepare()
+            mediaRecorder!!.setOrientationHint(orientation)
+            mediaRecorder!!.prepare()
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -113,31 +113,31 @@ class ScreenRecorderService : Service() {
 
     private inner class MediaProjectionCallback : MediaProjection.Callback() {
         override fun onStop() {
-            mMediaRecorder!!.stop()
-            mMediaRecorder!!.reset()
+            mediaRecorder!!.stop()
+            mediaRecorder!!.reset()
             Log.v(TAG, "Recording Stopped")
 
-            mMediaProjection = null
+            mediaProjection = null
             stopScreenSharing()
         }
     }
 
     private fun stopScreenSharing() {
-        if (mVirtualDisplay == null) {
+        if (virtualDisplay == null) {
             return
         }
-        mVirtualDisplay!!.release()
-        mMediaRecorder!!.release()
+        virtualDisplay!!.release()
+        mediaRecorder!!.release()
         destroyMediaProjection()
     }
 
-    private var mMediaProjectionCallback: MediaProjectionCallback? = null
+    private var mediaProjectionCallback: MediaProjectionCallback? = null
 
     private fun destroyMediaProjection() {
-        if (mMediaProjection != null) {
-            mMediaProjection!!.unregisterCallback(mMediaProjectionCallback)
-            mMediaProjection!!.stop()
-            mMediaProjection = null
+        if (mediaProjection != null) {
+            mediaProjection!!.unregisterCallback(mediaProjectionCallback)
+            mediaProjection!!.stop()
+            mediaProjection = null
         }
         Log.i(TAG, "MediaProjection Stopped")
         stopSelf()

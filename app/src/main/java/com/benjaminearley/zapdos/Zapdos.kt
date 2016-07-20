@@ -9,7 +9,7 @@ class Zapdos : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         Fabric.with(this, Crashlytics())
     }

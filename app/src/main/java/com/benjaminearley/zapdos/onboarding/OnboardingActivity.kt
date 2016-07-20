@@ -73,9 +73,9 @@ class OnboardingActivity : AppCompatActivity() {
     val MANIFEST_REQUEST_CODE = 0
     val SCREEN_RECORD_REQUEST_CODE = 1
 
-    var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    var sectionsPagerAdapter: SectionsPagerAdapter? = null
 
-    var mViewPager: ViewPager? = null
+    var viewPager: ViewPager? = null
 
     var mediaProjectionManager: MediaProjectionManager? = null
 
@@ -87,11 +87,11 @@ class OnboardingActivity : AppCompatActivity() {
 
         currentPage = if (canMakeSmores() && (!hasExternalStoragePermission(this) || !hasMicPermission(this))) 0 else 1
 
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
-        mViewPager = findViewById(R.id.container) as ViewPager
-        mViewPager?.adapter = mSectionsPagerAdapter
-        mViewPager?.currentItem = currentPage
+        viewPager = findViewById(R.id.container) as ViewPager
+        viewPager?.adapter = sectionsPagerAdapter
+        viewPager?.currentItem = currentPage
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener({ view -> nextStep() })
@@ -111,7 +111,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     fun nextPage(number: Int = 1) {
         currentPage += number
-        mViewPager?.setCurrentItem(currentPage, true)
+        viewPager?.setCurrentItem(currentPage, true)
     }
 
 

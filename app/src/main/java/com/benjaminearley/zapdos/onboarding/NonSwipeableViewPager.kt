@@ -10,7 +10,7 @@ import android.widget.Scroller
 
 class NonSwipeableViewPager : ViewPager {
 
-    private var mScroller: FixedSpeedScroller? = null
+    private var scroller: FixedSpeedScroller? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -23,11 +23,11 @@ class NonSwipeableViewPager : ViewPager {
     private fun init() {
         try {
             val viewpager = ViewPager::class.java
-            val scroller = viewpager.getDeclaredField("mScroller")
+            val scroller = viewpager.getDeclaredField("scroller")
             scroller.isAccessible = true
-            mScroller = FixedSpeedScroller(context,
+            this.scroller = FixedSpeedScroller(context,
                     DecelerateInterpolator())
-            scroller.set(this, mScroller)
+            scroller.set(this, this.scroller)
         } catch (ignored: Exception) {
         }
 
@@ -45,7 +45,7 @@ class NonSwipeableViewPager : ViewPager {
 
     private inner class FixedSpeedScroller : Scroller {
 
-        private var mDuration = 350
+        private var scrollDuration = 350
 
         constructor(context: Context) : super(context) {
         }
@@ -58,16 +58,16 @@ class NonSwipeableViewPager : ViewPager {
 
         override fun startScroll(startX: Int, startY: Int, dx: Int, dy: Int, duration: Int) {
             // Ignore received duration, use fixed one instead
-            super.startScroll(startX, startY, dx, dy, mDuration)
+            super.startScroll(startX, startY, dx, dy, scrollDuration)
         }
 
         override fun startScroll(startX: Int, startY: Int, dx: Int, dy: Int) {
             // Ignore received duration, use fixed one instead
-            super.startScroll(startX, startY, dx, dy, mDuration)
+            super.startScroll(startX, startY, dx, dy, scrollDuration)
         }
 
         fun setScrollDuration(duration: Int) {
-            mDuration = duration
+            scrollDuration = duration
         }
     }
 }

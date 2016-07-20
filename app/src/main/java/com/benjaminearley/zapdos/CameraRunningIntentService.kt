@@ -26,14 +26,14 @@ var STOP_FOREGROUND_ACTION = "com.benjaminearley.zapdos.action.stopforeground"
 
 class CameraRunningIntentService : Service(), FloatingViewListener {
 
-    private val mBinder = MyBinder()
+    private val binder = MyBinder()
     var resultCode: Int? = null
     var intentData: Intent? = null
 
     var inflater: LayoutInflater? = null
     var iconView: ImageView? = null
     var metrics: DisplayMetrics? = null
-    var mFloatingViewManager: FloatingViewManager? = null
+    var floatingViewManager: FloatingViewManager? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -113,7 +113,7 @@ class CameraRunningIntentService : Service(), FloatingViewListener {
         iconView?.setOnClickListener {
 
             try {
-                mFloatingViewManager?.removeAllViewToWindow()
+                floatingViewManager?.removeAllViewToWindow()
             } catch (ignored: Exception) {}
 
             val captureIntent = Intent(this, CaptureActivity::class.java)
@@ -121,16 +121,16 @@ class CameraRunningIntentService : Service(), FloatingViewListener {
             startActivity(captureIntent)
         }
 
-        mFloatingViewManager = FloatingViewManager(this, this)
-        mFloatingViewManager?.setFixedTrashIconImage(R.drawable.ic_trash_fixed)
-        mFloatingViewManager?.setActionTrashIconImage(R.drawable.ic_trash_action)
+        floatingViewManager = FloatingViewManager(this, this)
+        floatingViewManager?.setFixedTrashIconImage(R.drawable.ic_trash_fixed)
+        floatingViewManager?.setActionTrashIconImage(R.drawable.ic_trash_action)
         val options = FloatingViewManager.Options()
         options.shape = FloatingViewManager.SHAPE_CIRCLE
         options.overMargin = (16 * (metrics?.density?.toInt() ?: 0))
         try {
-            mFloatingViewManager?.removeAllViewToWindow()
+            floatingViewManager?.removeAllViewToWindow()
         } catch (ignored: Exception) {}
-        mFloatingViewManager?.addViewToWindow(iconView, options)
+        floatingViewManager?.addViewToWindow(iconView, options)
     }
 
     private fun checkForegroundTaskIsPokemon(): Boolean {
@@ -156,7 +156,7 @@ class CameraRunningIntentService : Service(), FloatingViewListener {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        return mBinder
+        return binder
     }
 
     inner class MyBinder : Binder() {
