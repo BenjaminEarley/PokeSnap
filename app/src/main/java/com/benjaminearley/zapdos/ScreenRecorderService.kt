@@ -15,6 +15,7 @@ import android.util.Log
 import android.util.SparseIntArray
 import android.view.Surface
 import android.view.WindowManager
+import java.io.File
 
 import java.io.IOException
 
@@ -37,13 +38,7 @@ class ScreenRecorderService : Service() {
         val action = intent.action
         if (ACTION_START == action) {
             val resultCode = intent.getIntExtra(EXTRA_RESULT_CODE, 0)
-            try {
-                startRecordingService(resultCode, intent)
-            } catch (e: IllegalStateException) {
-                stopReocrdingService()
-                startRecordingService(resultCode, intent)
-            }
-
+            startRecordingService(resultCode, intent)
         } else if (ACTION_STOP == action) {
             stopReocrdingService()
         }
@@ -94,7 +89,13 @@ class ScreenRecorderService : Service() {
             mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
             mediaRecorder!!.setVideoSource(MediaRecorder.VideoSource.SURFACE)
             mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mediaRecorder!!.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/catch+" + System.currentTimeMillis() / 1000L + ".mp4")
+
+            val f = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "pokesnap")
+            if (!f.exists()) {
+                f.mkdirs()
+            }
+
+            mediaRecorder!!.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/pokesnap/catch+" + System.currentTimeMillis() / 1000L + ".mp4")
             mediaRecorder!!.setVideoSize(DISPLAY_WIDTH, DISPLAY_HEIGHT)
             mediaRecorder!!.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
             mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
