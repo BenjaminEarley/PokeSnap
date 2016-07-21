@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,6 +85,11 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
+
+        window.enterTransition = null
+
+        window.sharedElementEnterTransition =
+                TransitionInflater.from(this).inflateTransition(R.transition.curve)
 
         currentPage = if (canMakeSmores() && (!hasExternalStoragePermission(this) || !hasMicPermission(this))) 0 else 1
 

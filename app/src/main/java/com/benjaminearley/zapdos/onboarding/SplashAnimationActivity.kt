@@ -17,11 +17,15 @@ class SplashAnimationActivity : AppCompatActivity() {
 
         val handler = Handler()
         handler.postDelayed({
-                    val intent = Intent(this, OnboardingActivity::class.java)
-                    startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, pokeBall as View, pokeBall.transitionName).toBundle())
-                    overridePendingTransition(R.anim.fade_in, 0)
-                }, 100)
+            val intent = Intent(this, OnboardingActivity::class.java)
+            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    this, pokeBall as View, pokeBall.transitionName).toBundle())
+            val handler = Handler()
+            handler.postDelayed({
+                finish()
+            }, 200)
+        }, 200)
 
+        window.exitTransition = null
     }
 }
