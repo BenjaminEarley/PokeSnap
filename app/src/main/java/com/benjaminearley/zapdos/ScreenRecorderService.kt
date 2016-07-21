@@ -90,7 +90,7 @@ class ScreenRecorderService : Service() {
             mediaRecorder!!.setVideoSource(MediaRecorder.VideoSource.SURFACE)
             mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
 
-            val f = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "pokesnap")
+            val f = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "pokesnap")
             if (!f.exists()) {
                 f.mkdirs()
             }

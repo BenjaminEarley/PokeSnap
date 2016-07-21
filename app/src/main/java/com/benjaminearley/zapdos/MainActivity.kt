@@ -6,15 +6,23 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.IBinder
+import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.Toolbar
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,12 +46,38 @@ class MainActivity : AppCompatActivity() {
 //            adView?.loadAd(adRequest)
 //        }
 
+        val listAdapter = VideoTileListAdapter(
+                getVideoThumbnails(
+                        File(
+                        Environment
+                                .getExternalStoragePublicDirectory(
+                                        Environment
+                                                .DIRECTORY_MOVIES)
+                                .toString() + "/pokesnap")))
+
+        val gridLayoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = gridLayoutManager
+        recyclerView.adapter = listAdapter
+
         startIntent = Intent(this@MainActivity, CameraRunningIntentService::class.java)
         startIntent?.action = START_FOREGROUND_ACTION
         startService(startIntent)
         bindService(startIntent, serviceConnection, Context.BIND_AUTO_CREATE)
 
         getScreenShotPermission()
+    }
+
+    fun getVideoThumbnails(dir: File): ArrayList<Bitmap> {
+        val thumbnails: ArrayList<Bitmap> = ArrayList()
+        if (dir.exists()) {
+            val files = dir.listFiles()
+            for (file in files) {
+                if (!file.isDirectory) {
+                    thumbnails.add(ThumbnailUtils.createVideoThumbnail(file.absolutePath, MediaStore.Video.Thumbnails.MICRO_KIND))
+                }
+            }
+        }
+        return thumbnails
     }
 
     override fun onResume() {
