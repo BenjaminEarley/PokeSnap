@@ -44,13 +44,14 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         val listAdapter = VideoTileListAdapter(
+                this,
                 getVideoThumbnails(
                         File(
-                        Environment
-                                .getExternalStoragePublicDirectory(
-                                        Environment
-                                                .DIRECTORY_MOVIES)
-                                .toString() + "/pokesnap")))
+                                Environment
+                                        .getExternalStoragePublicDirectory(
+                                                Environment
+                                                        .DIRECTORY_MOVIES)
+                                        .toString() + "/pokesnap")))
 
         val gridLayoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = gridLayoutManager
@@ -64,16 +65,20 @@ class MainActivity : AppCompatActivity() {
         getScreenShotPermission()
     }
 
-    fun getVideoThumbnails(dir: File): ArrayList<Bitmap> {
-        val thumbnails: ArrayList<Bitmap> = ArrayList()
+    fun getVideoThumbnails(dir: File): ArrayList<Pair<String, Bitmap>> {
+        val thumbnails: ArrayList<Pair<String, Bitmap>> = ArrayList()
         if (dir.exists()) {
             val files = dir.listFiles()
-            for (file in files) {
-                if (!file.isDirectory) {
-                    thumbnails.add(
-                            ThumbnailUtils.createVideoThumbnail(
-                                    file.absolutePath,
-                                    MediaStore.Video.Thumbnails.MINI_KIND))
+            files?.let {
+                for (file in files) {
+                    if (!file.isDirectory) {
+                        thumbnails.add(
+                                Pair(
+                                        file.absoluteFile.toString(),
+                                        ThumbnailUtils.createVideoThumbnail(
+                                                file.absolutePath,
+                                                MediaStore.Video.Thumbnails.MINI_KIND)))
+                    }
                 }
             }
         }
@@ -82,11 +87,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-       // if (!BuildConfig.DEBUG) adView?.resume()
+        // if (!BuildConfig.DEBUG) adView?.resume()
     }
 
     override fun onPause() {
-       // if (!BuildConfig.DEBUG) adView?.pause()
+        // if (!BuildConfig.DEBUG) adView?.pause()
         super.onPause()
     }
 

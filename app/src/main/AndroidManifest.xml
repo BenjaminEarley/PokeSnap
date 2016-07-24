@@ -17,7 +17,7 @@
 
     <application
         android:name=".Zapdos"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -66,10 +66,14 @@
         <activity
             android:name=".CaptureActivity"
             android:label="@string/title_activity_capture"
-            android:taskAffinity=".CaptureActivity"
-            android:windowSoftInputMode="adjustResize"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar.Translucent"/>
+            android:taskAffinity=".CaptureActivity"
+            android:theme="@style/AppTheme.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".VideoPlaybackActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label=""/>
     </application>
 
 </manifest>
