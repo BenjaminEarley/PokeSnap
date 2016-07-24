@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
 import android.media.projection.MediaProjectionManager
 import android.os.Build
@@ -18,8 +17,6 @@ import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.Toolbar
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.util.*
@@ -73,7 +70,10 @@ class MainActivity : AppCompatActivity() {
             val files = dir.listFiles()
             for (file in files) {
                 if (!file.isDirectory) {
-                    thumbnails.add(ThumbnailUtils.createVideoThumbnail(file.absolutePath, MediaStore.Video.Thumbnails.MICRO_KIND))
+                    thumbnails.add(
+                            ThumbnailUtils.createVideoThumbnail(
+                                    file.absolutePath,
+                                    MediaStore.Video.Thumbnails.MINI_KIND))
                 }
             }
         }

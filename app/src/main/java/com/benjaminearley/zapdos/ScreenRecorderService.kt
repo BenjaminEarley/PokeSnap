@@ -109,7 +109,6 @@ class ScreenRecorderService : Service() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     private inner class MediaProjectionCallback : MediaProjection.Callback() {
