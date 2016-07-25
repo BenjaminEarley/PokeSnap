@@ -1,7 +1,5 @@
 package com.benjaminearley.zapdos
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -49,10 +47,7 @@ class VideoPlaybackActivity : AppCompatActivity(), EasyVideoCallback {
         appBarLayout = findViewById(R.id.appbar) as AppBarLayout
 
         player = findViewById(R.id.player) as EasyVideoPlayer
-        val foo = intent?.extras?.getString(ARG_VIDEO_FILE, "")
-        val bar = "file://" + foo
-        val baz = Uri.parse(bar)
-        player?.setSource(baz)
+        player?.setSource(Uri.parse("file://" + intent?.extras?.getString(ARG_VIDEO_FILE, "")))
         player?.setCallback(this)
     }
 
@@ -61,7 +56,7 @@ class VideoPlaybackActivity : AppCompatActivity(), EasyVideoCallback {
         player?.pause()
     }
     
-    override fun onPrepared(player: EasyVideoPlayer?) { }
+    override fun onPrepared(player: EasyVideoPlayer?) {}
 
     override fun onStarted(player: EasyVideoPlayer?) {}
 
